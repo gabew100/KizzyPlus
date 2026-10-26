@@ -1,0 +1,22 @@
+# Build output
+.gradle/
+.kotlin/
+build/
+app/build/
+captures/
+*.apk
+*.aab
+dist/
+
+# Machine-specific
+local.properties
+.idea/
+*.iml
+.DS_Store
+Thumbs.db
+
+# Signing key and its passwords: never commit these
+keystore/
+*.jks
+*.keystore
+keystore.properties

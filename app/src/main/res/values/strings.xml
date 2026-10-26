@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Kizzy+</string>
+
+    <!-- Status block -->
+    <string name="now_label">On Discord right now</string>
+    <string name="now_service_off">Sharing is off</string>
+    <string name="now_service_off_detail">Turn on the switch below and Kizzy+ starts watching GameNative and Eden.</string>
+    <string name="now_starting">Checking for a running game…</string>
+    <string name="now_not_on_screen">GameNative and Eden aren\'t on screen</string>
+    <string name="now_not_on_screen_detail">Your status shows a game only while GameNative or Eden is the app on screen. Kizzy+ itself doesn\'t count, so you can check in here mid-game.</string>
+    <string name="rename_game">Rename this game</string>
+    <string name="rename_title">Name shown on Discord</string>
+    <string name="rename_message">Kizzy+ uses this name every time it detects this game. Detected as: %1$s</string>
+    <string name="rename_save">Save name</string>
+    <string name="rename_reset">Use detected name</string>
+    <string name="section_names">Renamed games</string>
+    <string name="names_empty">No renamed games yet. While a game is showing at the top of this screen, use Rename this game.</string>
+    <string name="names_detected_as">Detected as %1$s</string>
+    <string name="names_edit">Edit</string>
+    <string name="names_remove">Remove</string>
+    <string name="clear_status">Clear my Discord status</string>
+    <string name="clear_status_done">Cleared. A game that\'s still on screen comes back within a few seconds.</string>
+    <string name="kizzy_running_warning">Kizzy\'s %1$s is running too, and it sets its own status (such as \"Playing GameNative\") whatever Kizzy+ does. Clear my Discord status stops it, or turn it off in Kizzy.</string>
+    <string name="now_discord">Discord: %1$s</string>
+    <string name="enable_switch">Share my game on Discord</string>
+    <string name="root_checking">Checking root access…</string>
+    <string name="root_ok">Root access granted</string>
+    <string name="root_missing">Root access was not granted. Kizzy+ needs it to see GameNative\'s Wine processes and Eden\'s game list. Allow it in Magisk (or KernelSU), then tap the button below.</string>
+    <string name="root_retry">Ask for root again</string>
+
+    <!-- Discord account -->
+    <string name="section_account">Discord account</string>
+    <string name="account_signed_out">Not signed in. Pick one of the options below.</string>
+    <string name="account_signed_in">Signed in as %1$s</string>
+    <string name="account_checking">Checking the token with Discord…</string>
+    <string name="account_kizzy_mode">The Kizzy app sends presence with its own login, so Kizzy+ doesn\'t need one in this mode.</string>
+    <string name="sign_in_web">Sign in with Discord</string>
+    <string name="sign_in_kizzy">Copy login from Kizzy</string>
+    <string name="sign_in_paste">Paste a token</string>
+    <string name="sign_out">Sign out</string>
+    <string name="paste_title">Paste your Discord token</string>
+    <string name="paste_hint">Token</string>
+    <string name="paste_save">Check and save</string>
+    <string name="cancel">Cancel</string>
+    <string name="kizzy_no_token">Couldn\'t find a login in Kizzy. Open Kizzy, sign in there, then try again.</string>
+    <string name="token_rejected">Discord rejected that token. Sign in again.</string>
+    <string name="token_network">Couldn\'t reach Discord to check the token: %1$s</string>
+
+    <!-- Backend -->
+    <string name="section_backend">How presence gets to Discord</string>
+    <string name="backend_builtin">Kizzy+ connects to Discord itself (recommended)</string>
+    <string name="backend_kizzy">Hand each game to the Kizzy app</string>
+    <string name="backend_builtin_note">Kizzy+ opens a Discord connection only while a game is running and the screen is on, then closes it.</string>
+    <string name="backend_kizzy_note">Kizzy+ starts Kizzy\'s Custom RPC through root with the game\'s name and art, and stops it when you stop playing. This drives a part of Kizzy that isn\'t a public API, so a Kizzy update can break it.</string>
+
+    <!-- Detection -->
+    <string name="section_watch">What to watch</string>
+    <string name="watch_gamenative">GameNative (PC games)</string>
+    <string name="watch_eden">Eden (Switch games)</string>
+    <string name="poll_label">Check every</string>
+
+    <!-- Look -->
+    <string name="section_look">How it looks on your profile</string>
+    <string name="art_cover">Cover art (tall box art)</string>
+    <string name="art_header">Store banner (wide)</string>
+    <string name="show_launcher">Show GameNative or Eden as the small icon and second line</string>
+    <string name="status_label">Discord status while playing</string>
+
+    <!-- Troubleshooting -->
+    <string name="section_debug">Troubleshooting</string>
+    <string name="debug_run">Run a detection check now</string>
+    <string name="debug_running">Running the check…</string>
+    <string name="debug_copy">Copy check results</string>
+    <string name="debug_copied">Check results copied</string>
+    <string name="debug_hint">The check lists what Kizzy+ sees: GameNative\'s Wine processes, its last launched game, Eden\'s running game, and the Discord connection. Your token is never included.</string>
+
+    <!-- Advanced -->
+    <string name="section_advanced">Advanced</string>
+    <string name="app_id_label">Discord application ID</string>
+    <string name="app_id_help">Discord attaches the artwork to this application. The default is the public ID Kizzy uses. You can create your own on the Discord Developer Portal and paste its ID here.</string>
+    <string name="extra_gn_label">Extra GameNative package names</string>
+    <string name="extra_eden_label">Extra Eden package names</string>
+    <string name="extra_hint">Comma separated, for example com.example.fork</string>
+    <string name="advanced_save">Save advanced settings</string>
+    <string name="advanced_saved">Advanced settings saved</string>
+    <string name="app_id_invalid">An application ID is a number with 17 to 20 digits.</string>
+
+    <!-- Login screen -->
+    <string name="login_title">Sign in to Discord</string>
+    <string name="login_note">Kizzy+ keeps only the login token, encrypted on this device, and clears the web session afterwards.</string>
+
+    <!-- Notification -->
+    <string name="channel_status">Presence status</string>
+    <string name="notif_watching">Watching for games</string>
+    <string name="notif_watching_detail">Shares your game while GameNative or Eden is on screen.</string>
+    <string name="notif_showing">On Discord: %1$s</string>
+    <string name="notif_paused">Paused while the screen is off</string>
+    <string name="notif_paused_detail">Your Discord status was cleared. It comes back when you unlock and keep playing.</string>
+    <string name="notif_problem">Kizzy+ needs attention</string>
+</resources>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="poll_labels">
+        <item>5 seconds</item>
+        <item>10 seconds</item>
+        <item>20 seconds</item>
+        <item>30 seconds</item>
+    </string-array>
+    <integer-array name="poll_values">
+        <item>5</item>
+        <item>10</item>
+        <item>20</item>
+        <item>30</item>
+    </integer-array>
+    <string-array name="status_labels">
+        <item>Online</item>
+        <item>Idle</item>
+        <item>Do not disturb</item>
+    </string-array>
+    <string-array name="status_values" translatable="false">
+        <item>online</item>
+        <item>idle</item>
+        <item>dnd</item>
+    </string-array>
+</resources>

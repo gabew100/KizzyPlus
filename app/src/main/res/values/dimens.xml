@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="page_padding_h">20dp</dimen>
+    <dimen name="page_padding_v">24dp</dimen>
+    <dimen name="section_gap">32dp</dimen>
+    <dimen name="row_gap">8dp</dimen>
+</resources>

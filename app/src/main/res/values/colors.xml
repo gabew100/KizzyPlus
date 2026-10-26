@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Placeholder launcher icon colors, swap these when a real icon exists. -->
+    <color name="ic_launcher_background">#3B3F47</color>
+    <color name="ic_launcher_glyph">#FFFFFF</color>
+</resources>
