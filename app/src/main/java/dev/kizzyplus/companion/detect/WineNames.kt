@@ -15,7 +15,7 @@ internal object WineNames {
     private val DRIVE = Regex("([A-Za-z]):(?=\\\\|$)")
 
     /**
-     * SaveHop (github.com/gabew100/SaveHop-Internal) starts games as Play.bat, then SaveHop.exe,
+     * SaveHop, a save-sync launcher, starts games as Play.bat, then SaveHop.exe,
      * then the game, and keeps the game's name in SaveHop.json next to SaveHop.exe. This only does
      * anything when a SaveHop.exe process exists.
      */

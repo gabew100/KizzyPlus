@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Keeps lines readable on the Retroid's landscape screen. -->
+    <!-- Keeps lines readable on wide landscape screens. -->
     <dimen name="page_padding_h">72dp</dimen>
 </resources>

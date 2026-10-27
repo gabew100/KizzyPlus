@@ -4,6 +4,12 @@ Kizzy+ is a small companion app for a rooted Android handheld (built for the Ret
 
 Your status shows a game only while GameNative or Eden is the app on screen. It clears when you quit the game, go to the home screen or another app, or turn the screen off, and comes back when you return to the game. Kizzy+ doesn't modify, patch or reinstall GameNative or Eden. It only reads their files and process list through root.
 
+## Requirements
+
+- Android 10 or later, rooted with Magisk, KernelSU or APatch
+- GameNative, Eden, or both
+- A Discord account
+
 ## Install
 
 1. Download `KizzyPlus-<version>.apk` from the latest release on this repository's **Releases** page, copy it to the device and open it. Allow installs from your file manager if Android asks. It installs over earlier versions and keeps your login and settings.
@@ -27,7 +33,7 @@ Kizzy+ warns you at the top of its screen when one of Kizzy's presence modes is 
 
 ## What you'll see on Discord
 
-- **Name**: the game's title from GameNative's library (Steam, GOG, Epic, Amazon) or from Eden's game list. Custom games are named from SaveHop's `SaveHop.json` when the game runs through SaveHop, otherwise from the game's folder.
+- **Name**: the game's title from GameNative's library (Steam, GOG, Epic, Amazon) or from Eden's game list. Custom games (ones you added to GameNative yourself) are named after their folder.
 - **Second line**: where it's running, such as "GameNative · Steam" or "Eden · Nintendo Switch". You can turn this off.
 - **Big image**: Steam's library cover (or the store banner, if you pick that), GOG/Epic/Amazon art from GameNative's library, or the Switch icon for Eden games.
 - **Small image**: the GameNative or Eden logo.
@@ -37,7 +43,7 @@ Kizzy+ warns you at the top of its screen when one of Kizzy's presence modes is 
 
 While a game is showing at the top of Kizzy+, tap **Rename this game** and type the name you want on Discord. Kizzy+ uses that name every time it detects the same game again, and the new name goes out on the open connection straight away.
 
-Kizzy+ recognizes the game by its Steam app ID, GOG, Epic or Amazon ID, or Switch title ID. Custom games have no ID, so it uses the name it detected (from `SaveHop.json` or the game's folder), which stays the same between launches.
+Kizzy+ recognizes the game by its Steam app ID, GOG, Epic or Amazon ID, or Switch title ID. Custom games have no ID, so it uses the name it detected, which stays the same between launches.
 
 Saved names are listed under **Renamed games**, with what each game was detected as. **Edit** changes a name, and **Remove** goes back to the detected one. So does saving an empty name or the detected name.
 
@@ -45,7 +51,7 @@ Saved names are listed under **Renamed games**, with what each game was detected
 
 | Setting | What it does |
 | --- | --- |
-| How presence gets to Discord | **Kizzy+ connects to Discord itself** (default) opens its own Discord connection only while a game is running and the screen is on. **Hand each game to the Kizzy app** starts Kizzy's Custom RPC through root instead and uses Kizzy's login (see the Kizzy section below). |
+| How presence gets to Discord | **Kizzy+ connects to Discord itself** (default) opens its own Discord connection only while a game is running and the screen is on. **Hand each game to the Kizzy app** starts Kizzy's Custom RPC through root instead and uses Kizzy's login (see **How Kizzy+ relates to Kizzy** below). |
 | What to watch | Turn GameNative or Eden detection off. |
 | Check every | How often Kizzy+ checks GameNative's or Eden's processes while one of them is on screen: 5, 10, 20 or 30 seconds. Switching apps is noticed within 3 seconds regardless. |
 | Cover art / Store banner | Which artwork to try first. The other is used if the first isn't available. |
@@ -66,7 +72,7 @@ Kizzy+ keeps a single root shell open instead of starting `su` for every check, 
 
 ## How detection works
 
-Everything here comes from reading the GameNative and Eden source code. Kizzy+ doesn't rely on any API those apps don't have.
+Neither app offers a way for other apps to ask what's running, so Kizzy+ reads what they already write: their processes, database, preferences and logs. The file names and formats below come from GameNative's and Eden's source code.
 
 First, Kizzy+ asks Android's usage stats which app is on screen. Only when that's GameNative or Eden does it check for a game. Kizzy+'s own screen doesn't count, so opening it mid-game doesn't clear your status.
 
@@ -78,8 +84,8 @@ First, Kizzy+ asks Android's usage stats which app is on screen. Only when that'
   - The running `.exe` path is checked against each candidate's install folder (Steam games run from `C:\Program Files (x86)\Steam\steamapps\common\<folder>\…`, per `XServerScreen.getWineStartCommand`). A match confirms the game. Otherwise the most recent launch is used.
   - Title and artwork come from the `steam_app`, `gog_games`, `epic_games` and `amazon_games` tables. Steam cover URLs follow GameNative's own `SteamApp.getCapsuleUrl` scheme.
   - Custom games (folders you added yourself) have no library row. GameNative maps their folder to drive `A:`, so the command line only says `A:\Game.exe`. Kizzy+ reads the drive's real folder from the Wine prefix (`WINEPREFIX` in the process environment, then the `dosdevices/a:` symlink) and uses the folder's name.
-  - **SaveHop**: a SaveHop game runs as `Play.bat`, then `SaveHop.exe`, then the game. Kizzy+ never treats `SaveHop.exe` as the game. When it's running, Kizzy+ reads the game's `name` from `SaveHop.json` in the same folder. Without SaveHop installed, none of this runs.
-- `library_play_history` exists from GameNative database version 23. On older builds Kizzy+ matches by install folder only.
+  - Games started through the SaveHop save-sync launcher run as `Play.bat`, then `SaveHop.exe`, then the game. Kizzy+ skips `SaveHop.exe` and reads the game's `name` from the `SaveHop.json` next to it. For games that don't use SaveHop, this step does nothing.
+- The queries match GameNative's database schema up to version 29. `library_play_history` was added in version 23, so on older builds Kizzy+ matches by install folder only.
 
 ### Eden
 
@@ -93,9 +99,9 @@ First, Kizzy+ asks Android's usage stats which app is on screen. Only when that'
 - Eden supplies no artwork, so the Switch icon comes from community title databases keyed by title ID (`tinfoil.media`, then `api.nlib.cc`). If neither has the game, the Eden logo is used instead.
 - Watched packages: `dev.eden.eden_emulator`, `.nightly`, `dev.legacy.eden_emulator`, and `com.miHoYo.Yuanshen` (the "Eden Optimized" build, which ships under Genshin's package name).
 
-## Kizzy: integrate or build a separate presence?
+## How Kizzy+ relates to Kizzy
 
-Both. Here's what Kizzy's source (github.com/dead8309/Kizzy) offers:
+Kizzy+ can work with Kizzy (github.com/dead8309/Kizzy) but doesn't need it. The Kizzy features below were checked against Kizzy 6.2.
 
 - **No public API for custom presence.** Kizzy's only exported entry points are `ShortcutsActivity`, which starts or stops its built-in App Detection, Media RPC and Experimental RPC modes, and a quick-settings tile. None of them take a game name or image. App Detection reports the foreground app, which would be "GameNative", not the game.
 - **`CustomRpcService` takes a JSON `RPC` extra** (`RpcConfig`: name, state, images, timestamps) but isn't exported. Root `am` can still start it, so the optional **Hand each game to the Kizzy app** mode does exactly that. This drives an internal part of Kizzy, so a Kizzy update could break it. Kizzy also holds a wake lock for as long as that service runs. Kizzy+ stops it when the screen goes off.
@@ -108,33 +114,7 @@ So by default Kizzy+ talks to Discord itself. It uses the same gateway approach 
 - **This uses your user token, like Kizzy does.** Setting presence from a user account is against Discord's Terms of Service ("self-botting"). Discord rarely acts on presence-only use, but the risk is yours. Kizzy+ only sets your status. It never reads or sends messages.
 - Kizzy+ stores your token encrypted with an Android Keystore key, and only sends it to `discord.com`. The troubleshooting report never includes it.
 - Images: Steam and GameNative art comes from Valve's and the stores' CDNs. Switch icons come from `tinfoil.media` and `api.nlib.cc`, which are community services and may change.
-- Kizzy+ hasn't run on a Retroid yet. See **What was tested** below for what was checked and what wasn't. If something doesn't show up, run the troubleshooting check and look at what it reports.
-
-## What was tested
-
-On an Android 14 emulator rooted with Magisk 26.4, using two stand-in apps installed under GameNative's and Eden's real package names. They write the same files and processes the real apps do: a `pluvia.db` in WAL mode with Wine-like processes, and Eden's preferences, `launched.json`, `eden_log.txt` and an `EmulationActivity`. The real Kizzy 6.2 was installed alongside.
-
-- Magisk's grant prompt, the "denied" state and **Ask for root again**.
-- GameNative: a game named by its running `.exe` folder (Hollow Knight), and one named only by play history (ELDEN RING). The newest rows were read from the WAL file. Quitting cleared it.
-- Eden: the game named from `launched.json`, a switch to another game inside the same session through the log line, and clearing when Eden closed.
-- Screen off cleared the status within a second. A lit lock screen showed nothing. Unlocking brought it back with the original start time.
-- The Kizzy bridge: Kizzy's notification read "Custom RPC is running: Hollow Knight". Screen off stopped Kizzy's service and unlocking restarted it. Switching back to the built-in mode stopped it.
-- **Copy login from Kizzy** with Kizzy signed out, and **Paste a token** with a fake token (Discord's API rejected it).
-- Discord's gateway, from a JVM test against the live servers: a fake token is refused with close code 4004 and Kizzy+ stops instead of retrying.
-- Light and dark theme, portrait and landscape, and D-pad focus.
-- Version 1.1.0: a SaveHop custom game (`A:\SaveHop.exe` with `SaveHop.json` in the folder `A:` maps to) was named from `SaveHop.json`. Pressing Home cleared the status within 3 seconds. Opening Kizzy+ from the home screen didn't bring it back, returning to the game did, and opening Kizzy+ mid-game kept it. The same went for Eden. With Kizzy's App Detection turned on through Kizzy's shortcut, Kizzy+ showed the warning, and **Clear my Discord status** stopped it.
-- Version 1.2.0: renaming a running game changed the status within a second. The saved name was used again after the game was force-stopped and relaunched as a new session. Removing it went back to the detected name.
-
-Testing found two bugs, both fixed in this build:
-
-- Magisk's default mount namespace hides other apps' data folders, so GameNative looked uninstalled. The root shell now runs in the global namespace (`su --mount-master`, with an `nsenter` fallback).
-- The unlock broadcast comes from SystemUI and wasn't reaching Kizzy+. The receiver now accepts it, and as a fallback Kizzy+ checks the lock state every 2 seconds while the lock screen is lit.
-
-Not tested, because they need your account or the real apps:
-
-- a real presence appearing on your Discord profile, with artwork
-- capturing the token after the WebView login (the login page loads)
-- real GameNative and Eden builds on the Retroid
+- GameNative and Eden can change how they store things in any update. If a game stops showing up after an update, run the troubleshooting check below and look at what it reports.
 
 ## Troubleshooting
 
@@ -168,19 +148,19 @@ The APK lands in `app/build/outputs/apk/release/app-release.apk`.
 
 ### Signing
 
-The signing key isn't in this repository, and `.gitignore` keeps it out. To sign release builds with it, put `release.jks` and a `keystore.properties` file in a `keystore/` folder at the root of the project:
+The APKs on the Releases page are signed with a key that isn't in this repository. To sign your own release builds, create a keystore and put it in a `keystore/` folder at the root of the project, next to a `keystore.properties` file:
 
 ```
 storeFile=keystore/release.jks
 storePassword=<store password>
-keyAlias=kizzyplus
+keyAlias=<key alias>
 keyPassword=<key password>
 ```
 
-Without that folder, release builds are signed with the Android debug key. Android won't install an update signed with a different key over an existing install, so keep a backup of the key somewhere safe.
+`.gitignore` keeps the `keystore/` folder out of git. Without it, release builds are signed with the Android debug key.
+
+Android won't install an update signed with a different key over an existing install. To switch between your own builds and the published ones, uninstall Kizzy+ first, which also clears its login and settings.
 
 ### Tests
 
-`gradlew.bat :app:testDebugUnitTest` runs the unit tests: parsing of `ps` output, Wine command lines, SaveHop and custom-game naming, Kizzy's MMKV file, saved names and the play timer. Add `-PliveDiscord` to also run the gateway test against Discord's servers. GitHub Actions runs the tests, lint and a debug build on every push to `main`.
-
-The launcher icon ("K+" on grey) is a placeholder. Swap `app/src/main/res/drawable/ic_launcher_foreground.xml` and `values/colors.xml` for a real one.
+`gradlew.bat :app:testDebugUnitTest` runs the unit tests: parsing of `ps` output, Wine command lines, custom-game naming, Kizzy's MMKV file, saved names and the play timer. Add `-PliveDiscord` to also run the gateway test against Discord's servers. GitHub Actions runs the tests, lint and a debug build on every push to `main`.
